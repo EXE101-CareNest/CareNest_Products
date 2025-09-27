@@ -1,0 +1,14 @@
+namespace Shared.Contracts
+{
+    public class AppointmentResponse
+    {
+        public string Id { get; set; } = string.Empty;
+        public string PatientId { get; set; } = string.Empty;
+        public string DoctorId { get; set; } = string.Empty;
+        public DateTime AppointmentDate { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+    }
+}

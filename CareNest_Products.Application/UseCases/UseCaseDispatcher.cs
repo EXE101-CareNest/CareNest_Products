@@ -30,9 +30,9 @@ namespace CareNest_Products.Application.UseCases
         }
 
         public async Task<TResponse> DispatchQueryAsync<TQuery, TResponse>(TQuery query) 
-            where TQuery : IQuery<TResponse>
+            where TQuery : IRequest<TResponse>
         {
-            return (TResponse)await _mediator.Send(query);
+            return await _mediator.Send(query);
         }
     }
 }

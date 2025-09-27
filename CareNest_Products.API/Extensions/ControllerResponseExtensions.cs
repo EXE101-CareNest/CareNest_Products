@@ -3,42 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CareNest_Products.API.Extensions
 {
-    /// <summary>
-    /// Controller response extensions
-    /// </summary>
     public static class ControllerResponseExtensions
     {
-        /// <summary>
-        /// Trả về response thành công với data
-        /// </summary>
-        public static IActionResult OkResponse<T>(this ControllerBase controller, T data, string message = "Success")
+        public static IActionResult OkResponse<T>(this ControllerBase controller, T data, string? message = null)
         {
-            var response = ApiResponse<T>.SuccessResult(data, message);
-            return controller.Ok(response);
+            return controller.Ok(ApiResponse<T>.SuccessResponse(data, message));
         }
 
-        /// <summary>
-        /// Trả về response thành công không có data
-        /// </summary>
-        public static IActionResult OkResponse(this ControllerBase controller, string message = "Success")
+        public static IActionResult ErrorResponse<T>(this ControllerBase controller, string message)
         {
-            var response = ApiResponse.SuccessResult(message);
-            return controller.Ok(response);
+            return controller.BadRequest(ApiResponse<T>.Failure(message));
         }
 
-        /// <summary>
-        /// Trả về response lỗi
-        /// </summary>
-        public static IActionResult ErrorResponse(this ControllerBase controller, string message, int statusCode = 400, List<string>? errors = null)
+        public static IActionResult ErrorResponse<T>(this ControllerBase controller, string message, T data)
         {
-            var response = ApiResponse.ErrorResult(message, errors);
-            return statusCode switch
-            {
-                400 => controller.BadRequest(response),
-                404 => controller.NotFound(response),
-                500 => controller.StatusCode(500, response),
-                _ => controller.BadRequest(response)
-            };
+            return controller.BadRequest(ApiResponse<T>.Failure(message));
         }
     }
 }

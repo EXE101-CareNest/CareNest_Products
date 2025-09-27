@@ -1,5 +1,5 @@
 using CareNest_Products.Application.Interfaces.CQRS.Commands;
-using CareNest_Products.Application.Interfaces.CQRS.Queries;
+using MediatR;
 
 namespace CareNest_Products.Application.Interfaces.CQRS
 {
@@ -24,6 +24,6 @@ namespace CareNest_Products.Application.Interfaces.CQRS
         /// Dispatch query
         /// </summary>
         Task<TResponse> DispatchQueryAsync<TQuery, TResponse>(TQuery query) 
-            where TQuery : IQuery<TResponse>;
+            where TQuery : IRequest<TResponse>;
     }
 }

@@ -6,6 +6,7 @@ using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Features.Queries.GetById;
 using CareNest_Products.Application.Interfaces.CQRS;
 using CareNest_Products.API.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareNest_Products.API.Controllers
@@ -17,11 +18,11 @@ namespace CareNest_Products.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IUseCaseDispatcher _dispatcher;
+        private readonly IMediator _mediator;
 
-        public ProductsController(IUseCaseDispatcher dispatcher)
+        public ProductsController(IMediator mediator)
         {
-            _dispatcher = dispatcher;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -58,12 +59,12 @@ namespace CareNest_Products.API.Controllers
                     Status = status
                 };
 
-                var result = await _dispatcher.DispatchQueryAsync<GetAllProductsPagingQuery, PageResult<ProductResponse>>(query);
+                var result = await _mediator.Send(query);
                 return this.OkResponse(result, "Lấy danh sách sản phẩm thành công");
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi lấy danh sách sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi lấy danh sách sản phẩm: {ex.Message}");
             }
         }
 
@@ -78,16 +79,16 @@ namespace CareNest_Products.API.Controllers
             try
             {
                 var query = new GetByIdProductQuery { Id = id };
-                var result = await _dispatcher.DispatchQueryAsync<GetByIdProductQuery, Domain.Entities.Product>(query);
+                var result = await _mediator.Send(query);
                 return this.OkResponse(result, "Lấy thông tin sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {
-                return this.ErrorResponse(ex.Message, 404);
+                return this.ErrorResponse<object>(ex.Message);
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi lấy thông tin sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi lấy thông tin sản phẩm: {ex.Message}");
             }
         }
 
@@ -107,19 +108,19 @@ namespace CareNest_Products.API.Controllers
                         .SelectMany(v => v.Errors)
                         .Select(e => e.ErrorMessage)
                         .ToList();
-                    return this.ErrorResponse("Dữ liệu không hợp lệ", 400, errors);
+                    return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
                 }
 
-                var result = await _dispatcher.DispatchAsync<CreateProductCommand, Domain.Entities.Product>(command);
+                var result = await _mediator.Send(command);
                 return this.OkResponse(result, "Tạo sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {
-                return this.ErrorResponse(ex.Message, 400);
+                return this.ErrorResponse<object>(ex.Message);
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi tạo sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi tạo sản phẩm: {ex.Message}");
             }
         }
 
@@ -140,20 +141,20 @@ namespace CareNest_Products.API.Controllers
                         .SelectMany(v => v.Errors)
                         .Select(e => e.ErrorMessage)
                         .ToList();
-                    return this.ErrorResponse("Dữ liệu không hợp lệ", 400, errors);
+                    return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
                 }
 
                 command.Id = id;
-                var result = await _dispatcher.DispatchAsync<UpdateProductCommand, Domain.Entities.Product>(command);
+                var result = await _mediator.Send(command);
                 return this.OkResponse(result, "Cập nhật sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {
-                return this.ErrorResponse(ex.Message, 404);
+                return this.ErrorResponse<object>(ex.Message);
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi cập nhật sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi cập nhật sản phẩm: {ex.Message}");
             }
         }
 
@@ -168,16 +169,16 @@ namespace CareNest_Products.API.Controllers
             try
             {
                 var command = new DeleteProductCommand { Id = id };
-                await _dispatcher.DispatchAsync(command);
+                await _mediator.Send(command);
                 return this.OkResponse("Xóa sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {
-                return this.ErrorResponse(ex.Message, 404);
+                return this.ErrorResponse<object>(ex.Message);
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi xóa sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi xóa sản phẩm: {ex.Message}");
             }
         }
     }

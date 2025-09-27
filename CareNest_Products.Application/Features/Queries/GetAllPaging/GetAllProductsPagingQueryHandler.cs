@@ -1,14 +1,14 @@
 using CareNest_Products.Application.Common;
-using CareNest_Products.Application.Interfaces.CQRS.Queries;
 using CareNest_Products.Application.Interfaces.UOW;
 using CareNest_Products.Domain.Entities;
+using MediatR;
 
 namespace CareNest_Products.Application.Features.Queries.GetAllPaging
 {
     /// <summary>
     /// Handler cho query lấy danh sách sản phẩm có phân trang
     /// </summary>
-    public class GetAllProductsPagingQueryHandler : IQueryHandler<GetAllProductsPagingQuery, PageResult<ProductResponse>>
+    public class GetAllProductsPagingQueryHandler : IRequestHandler<GetAllProductsPagingQuery, PageResult<ProductResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +17,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PageResult<ProductResponse>> HandleAsync(GetAllProductsPagingQuery query)
+        public async Task<PageResult<ProductResponse>> Handle(GetAllProductsPagingQuery query, CancellationToken cancellationToken)
         {
             // Tạo predicate cho filtering
             var predicate = CreatePredicate(query);

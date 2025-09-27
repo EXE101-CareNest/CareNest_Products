@@ -1,0 +1,19 @@
+services:
+  carenest-products-api:
+    image: carenest-products-api--dev:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8016:8080"
+    container_name: carenest-products-api-dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      carenest-network:
+        ipv4_address: 192.168.0.13
+
+networks:
+  carenest-network:
+    external: true

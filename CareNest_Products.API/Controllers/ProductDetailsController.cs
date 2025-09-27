@@ -3,6 +3,7 @@ using CareNest_Products.Application.Features.Commands.Create;
 using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Interfaces.CQRS;
 using CareNest_Products.API.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareNest_Products.API.Controllers
@@ -14,11 +15,11 @@ namespace CareNest_Products.API.Controllers
     [ApiController]
     public class ProductDetailsController : ControllerBase
     {
-        private readonly IUseCaseDispatcher _dispatcher;
+        private readonly IMediator _mediator;
 
-        public ProductDetailsController(IUseCaseDispatcher dispatcher)
+        public ProductDetailsController(IMediator mediator)
         {
-            _dispatcher = dispatcher;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -61,12 +62,12 @@ namespace CareNest_Products.API.Controllers
                     MaxPrice = maxPrice
                 };
 
-                var result = await _dispatcher.DispatchQueryAsync<GetAllProductDetailsPagingQuery, PageResult<ProductDetailResponse>>(query);
+                var result = await _mediator.Send(query);
                 return this.OkResponse(result, "Lấy danh sách chi tiết sản phẩm thành công");
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi lấy danh sách chi tiết sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi lấy danh sách chi tiết sản phẩm: {ex.Message}");
             }
         }
 
@@ -86,12 +87,12 @@ namespace CareNest_Products.API.Controllers
                     PageSize = 1000 // Lấy tất cả chi tiết của danh mục
                 };
 
-                var result = await _dispatcher.DispatchQueryAsync<GetAllProductDetailsPagingQuery, PageResult<ProductDetailResponse>>(query);
-                return this.OkResponse(result.Data, "Lấy chi tiết danh mục thành công");
+                var result = await _mediator.Send(query);
+                return this.OkResponse(result, "Lấy chi tiết danh mục thành công");
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi lấy chi tiết danh mục: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi lấy chi tiết danh mục: {ex.Message}");
             }
         }
 
@@ -112,20 +113,20 @@ namespace CareNest_Products.API.Controllers
                         .SelectMany(v => v.Errors)
                         .Select(e => e.ErrorMessage)
                         .ToList();
-                    return this.ErrorResponse("Dữ liệu không hợp lệ", 400, errors);
+                    return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
                 }
 
                 command.CategoryId = categoryId;
-                var result = await _dispatcher.DispatchAsync<CreateProductDetailCommand, Domain.Entities.ProductDetail>(command);
+                var result = await _mediator.Send(command);
                 return this.OkResponse(result, "Tạo chi tiết sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {
-                return this.ErrorResponse(ex.Message, 400);
+                return this.ErrorResponse<object>(ex.Message);
             }
             catch (Exception ex)
             {
-                return this.ErrorResponse($"Lỗi khi tạo chi tiết sản phẩm: {ex.Message}", 500);
+                return this.ErrorResponse<object>($"Lỗi khi tạo chi tiết sản phẩm: {ex.Message}");
             }
         }
     }

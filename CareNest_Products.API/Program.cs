@@ -1,5 +1,10 @@
 using CareNest_Products.Application;
+using CareNest_Products.Application.Common.Options;
+using CareNest_Products.Application.Interfaces.Services;
 using CareNest_Products.Infrastructure;
+using CareNest_Products.Infrastructure.Services;
+using CareNest_Products.Infrastructure.Extensions;
+using CareNest_Products.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +22,24 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Add HTTP Context Accessor
+builder.Services.AddHttpContextAccessor();
+
+// Add HTTP Client
+builder.Services.AddHttpClient();
+
+// Configure Options
+builder.Services.Configure<APIServiceOption>(builder.Configuration.GetSection("APIService"));
+
+// Add Services
+builder.Services.AddScoped<IAPIService, APIService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+// Add MediatR
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(CareNest_Products.Application.ApplicationServiceRegistration).Assembly);
+});
+
 // Add Application services
 builder.Services.AddApplicationServices();
 
@@ -24,6 +47,9 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
+
+// Add Global Exception Handling Middleware
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -41,5 +67,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed database
+await app.SeedDatabaseAsync();
 
 app.Run();
