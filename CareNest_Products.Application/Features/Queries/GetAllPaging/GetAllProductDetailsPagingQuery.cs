@@ -1,12 +1,12 @@
 using CareNest_Products.Application.Common;
-using CareNest_Products.Application.Interfaces.CQRS.Queries;
+using MediatR;
 
 namespace CareNest_Products.Application.Features.Queries.GetAllPaging
 {
     /// <summary>
     /// Query lấy danh sách chi tiết sản phẩm có phân trang
     /// </summary>
-    public class GetAllProductDetailsPagingQuery : IQuery<PageResult<ProductDetailResponse>>
+    public class GetAllProductDetailsPagingQuery : IRequest<PageResult<ProductDetailResponse>>
     {
         /// <summary>
         /// Trang hiện tại
