@@ -19,10 +19,12 @@ namespace CareNest_Products.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUseCaseDispatcher _dispatcher;
 
-        public ProductsController(IMediator mediator)
+        public ProductsController(IMediator mediator, IUseCaseDispatcher dispatcher)
         {
             _mediator = mediator;
+            _dispatcher = dispatcher;
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace CareNest_Products.API.Controllers
             [FromQuery] string? sortColumn = null,
             [FromQuery] string? sortDirection = "asc",
             [FromQuery] string? searchTerm = null,
-            [FromQuery] Guid? shopId = null,
+            [FromQuery] string? shopId = null,
             [FromQuery] bool? status = null)
         {
             try
@@ -111,7 +113,7 @@ namespace CareNest_Products.API.Controllers
                     return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
                 }
 
-                var result = await _mediator.Send(command);
+                var result = await _dispatcher.DispatchAsync<CreateProductCommand, CareNest_Products.Domain.Entities.Product>(command);
                 return this.OkResponse(result, "Tạo sản phẩm thành công");
             }
             catch (ArgumentException ex)
@@ -145,7 +147,7 @@ namespace CareNest_Products.API.Controllers
                 }
 
                 command.Id = id;
-                var result = await _mediator.Send(command);
+                var result = await _dispatcher.DispatchAsync<UpdateProductCommand, CareNest_Products.Domain.Entities.Product>(command);
                 return this.OkResponse(result, "Cập nhật sản phẩm thành công");
             }
             catch (ArgumentException ex)
@@ -169,7 +171,7 @@ namespace CareNest_Products.API.Controllers
             try
             {
                 var command = new DeleteProductCommand { Id = id };
-                await _mediator.Send(command);
+                await _dispatcher.DispatchAsync(command);
                 return this.OkResponse("Xóa sản phẩm thành công");
             }
             catch (ArgumentException ex)

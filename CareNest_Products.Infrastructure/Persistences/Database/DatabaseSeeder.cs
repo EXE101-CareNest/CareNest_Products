@@ -32,7 +32,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 new Product
                 {
                     Id = Guid.NewGuid(),
-                    ShopId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Shop ID mẫu
+                    ShopId = "11111111-1111-1111-1111-111111111111", // Shop ID mẫu
                     ProductName = "iPhone 15 Pro Max",
                     Description = "Điện thoại iPhone 15 Pro Max với chip A17 Pro mạnh mẽ, camera 48MP và màn hình Super Retina XDR 6.7 inch",
                     ImgUrls = "[\"https://example.com/iphone15-1.jpg\", \"https://example.com/iphone15-2.jpg\"]",
@@ -43,7 +43,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 new Product
                 {
                     Id = Guid.NewGuid(),
-                    ShopId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    ShopId = "11111111-1111-1111-1111-111111111111",
                     ProductName = "Samsung Galaxy S24 Ultra",
                     Description = "Điện thoại Samsung Galaxy S24 Ultra với S Pen, camera 200MP và màn hình Dynamic AMOLED 2X 6.8 inch",
                     ImgUrls = "[\"https://example.com/samsung-s24-1.jpg\", \"https://example.com/samsung-s24-2.jpg\"]",
@@ -54,7 +54,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 new Product
                 {
                     Id = Guid.NewGuid(),
-                    ShopId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Shop khác
+                    ShopId = "22222222-2222-2222-2222-222222222222", // Shop khác
                     ProductName = "MacBook Pro M3",
                     Description = "Laptop MacBook Pro M3 với chip Apple M3, màn hình Liquid Retina XDR 14 inch và hiệu năng vượt trội",
                     ImgUrls = "[\"https://example.com/macbook-pro-1.jpg\", \"https://example.com/macbook-pro-2.jpg\"]",
@@ -65,7 +65,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 new Product
                 {
                     Id = Guid.NewGuid(),
-                    ShopId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    ShopId = "22222222-2222-2222-2222-222222222222",
                     ProductName = "Dell XPS 13",
                     Description = "Laptop Dell XPS 13 với Intel Core i7, màn hình 13.4 inch InfinityEdge và thiết kế siêu mỏng",
                     ImgUrls = "[\"https://example.com/dell-xps-1.jpg\", \"https://example.com/dell-xps-2.jpg\"]",

@@ -55,7 +55,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         {
             return p =>
                 (string.IsNullOrEmpty(query.SearchTerm) || p.ProductName.Contains(query.SearchTerm)) &&
-                (!query.ShopId.HasValue || p.ShopId == query.ShopId.Value) &&
+                (string.IsNullOrEmpty(query.ShopId) || p.ShopId == query.ShopId) &&
                 (!query.Status.HasValue || p.Status == query.Status.Value);
         }
 

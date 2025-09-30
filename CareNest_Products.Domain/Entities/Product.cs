@@ -12,7 +12,7 @@ namespace CareNest_Products.Domain.Entities
         /// ID của shop (Foreign Key)
         /// </summary>
         [Required]
-        public Guid ShopId { get; set; }
+        public string ShopId { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên sản phẩm (1-100 ký tự)
