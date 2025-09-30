@@ -17,7 +17,7 @@ namespace CareNest_Products.Domain.Repositories
         /// <summary>
         /// Lấy entity theo ID
         /// </summary>
-        Task<T?> GetByIdAsync(Guid id);
+        Task<T?> GetByIdAsync(string id);
 
         /// <summary>
         /// Tìm entities theo điều kiện
@@ -62,7 +62,7 @@ namespace CareNest_Products.Domain.Repositories
         /// <summary>
         /// Xóa entity theo ID
         /// </summary>
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(string id);
 
         /// <summary>
         /// Xóa nhiều entities

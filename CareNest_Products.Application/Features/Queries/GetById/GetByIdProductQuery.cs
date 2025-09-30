@@ -11,6 +11,6 @@ namespace CareNest_Products.Application.Features.Queries.GetById
         /// <summary>
         /// ID của sản phẩm
         /// </summary>
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace CareNest_Products.Application.Features.Commands.Update
         /// <summary>
         /// ID của sản phẩm cần cập nhật
         /// </summary>
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Tên sản phẩm

@@ -10,6 +10,6 @@ namespace CareNest_Products.Application.Features.Commands.Delete
         /// <summary>
         /// ID của sản phẩm cần xóa
         /// </summary>
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

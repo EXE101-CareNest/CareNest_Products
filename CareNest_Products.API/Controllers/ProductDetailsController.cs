@@ -41,7 +41,7 @@ namespace CareNest_Products.API.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortColumn = null,
             [FromQuery] string? sortDirection = "asc",
-            [FromQuery] Guid? categoryId = null,
+            [FromQuery] string? categoryId = null,
             [FromQuery] string? searchTerm = null,
             [FromQuery] bool? status = null,
             [FromQuery] int? minPrice = null,
@@ -77,7 +77,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="categoryId">ID của danh mục</param>
         /// <returns>Danh sách chi tiết của danh mục</returns>
         [HttpGet("categories/{categoryId}")]
-        public async Task<IActionResult> GetByCategoryId(Guid categoryId)
+        public async Task<IActionResult> GetByCategoryId(string categoryId)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="command">Thông tin chi tiết mới</param>
         /// <returns>Chi tiết vừa tạo</returns>
         [HttpPost("categories/{categoryId}")]
-        public async Task<IActionResult> Create(Guid categoryId, [FromBody] CreateProductDetailCommand command)
+        public async Task<IActionResult> Create(string categoryId, [FromBody] CreateProductDetailCommand command)
         {
             try
             {

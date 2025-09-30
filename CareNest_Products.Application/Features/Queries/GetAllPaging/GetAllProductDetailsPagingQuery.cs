@@ -31,7 +31,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         /// <summary>
         /// Lọc theo CategoryId
         /// </summary>
-        public Guid? CategoryId { get; set; }
+        public string? CategoryId { get; set; }
 
         /// <summary>
         /// Tìm kiếm theo tên chi tiết

@@ -76,7 +76,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="id">ID của sản phẩm</param>
         /// <returns>Thông tin sản phẩm</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="command">Thông tin sản phẩm mới</param>
         /// <returns>Sản phẩm đã cập nhật</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductCommand command)
+        public async Task<IActionResult> Update(string id, [FromBody] UpdateProductCommand command)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="id">ID của sản phẩm cần xóa</param>
         /// <returns>Kết quả xóa</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {

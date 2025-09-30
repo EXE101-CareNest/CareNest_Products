@@ -11,7 +11,7 @@ namespace CareNest_Products.Application.Features.Commands.Create
         /// <summary>
         /// ID của danh mục sản phẩm
         /// </summary>
-        public Guid CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         /// <summary>
         /// Tên chi tiết cụ thể

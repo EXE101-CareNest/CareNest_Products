@@ -26,7 +26,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Repository
             return await _dbSet.ToListAsync();
         }
 
-        public virtual async Task<T?> GetByIdAsync(Guid id)
+        public virtual async Task<T?> GetByIdAsync(string id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -103,7 +103,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Repository
             await Task.CompletedTask;
         }
 
-        public virtual async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteAsync(string id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)

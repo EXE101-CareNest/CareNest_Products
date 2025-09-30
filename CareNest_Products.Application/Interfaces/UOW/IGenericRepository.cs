@@ -10,7 +10,7 @@ namespace CareNest_Products.Application.Interfaces.UOW
     public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T?> GetByIdAsync(Guid id);
+        Task<T?> GetByIdAsync(string id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<IEnumerable<TResult>> FindAsync<TResult>(
             Expression<Func<T, bool>>? predicate = null,
@@ -23,7 +23,7 @@ namespace CareNest_Products.Application.Interfaces.UOW
         Task UpdateAsync(T entity);
         Task UpdateRangeAsync(IEnumerable<T> entities);
         Task DeleteAsync(T entity);
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(string id);
         Task DeleteRangeAsync(IEnumerable<T> entities);
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null);

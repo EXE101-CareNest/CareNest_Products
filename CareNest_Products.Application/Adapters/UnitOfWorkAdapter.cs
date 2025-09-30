@@ -61,7 +61,7 @@ namespace CareNest_Products.Application.Adapters
             return await _domainRepository.GetAllAsync();
         }
 
-        public async Task<T?> GetByIdAsync(Guid id)
+        public async Task<T?> GetByIdAsync(string id)
         {
             return await _domainRepository.GetByIdAsync(id);
         }
@@ -106,7 +106,7 @@ namespace CareNest_Products.Application.Adapters
             await _domainRepository.DeleteAsync(entity);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(string id)
         {
             await _domainRepository.DeleteAsync(id);
         }

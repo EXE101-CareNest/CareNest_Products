@@ -12,7 +12,7 @@ namespace CareNest_Products.Domain.Entities
         /// ID của danh mục sản phẩm (Foreign Key)
         /// </summary>
         [Required]
-        public Guid CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         /// <summary>
         /// Tên chi tiết cụ thể
