@@ -2,8 +2,10 @@ using CareNest_Products.Application.Common;
 using CareNest_Products.Application.Features.Commands.Create;
 using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Interfaces.CQRS;
+using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.API.Extensions;
 using MediatR;
+using CareNest_Products.Application.Interfaces.CQRS;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareNest_Products.API.Controllers
@@ -16,10 +18,12 @@ namespace CareNest_Products.API.Controllers
     public class ProductCategoriesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUseCaseDispatcher _dispatcher;
 
-        public ProductCategoriesController(IMediator mediator)
+        public ProductCategoriesController(IMediator mediator, IUseCaseDispatcher dispatcher)
         {
             _mediator = mediator;
+            _dispatcher = dispatcher;
         }
 
         /// <summary>
@@ -108,8 +112,18 @@ namespace CareNest_Products.API.Controllers
                 }
 
                 command.ProductId = productId;
-                var result = await _mediator.Send(command);
-                return this.OkResponse(result, "Tạo danh mục sản phẩm thành công");
+                var created = await _dispatcher.DispatchAsync<CreateProductCategoryCommand, CareNest_Products.Domain.Entities.ProductCategory>(command);
+                var dto = new ProductCategoryResponse
+                {
+                    Id = created.Id,
+                    ProductId = created.ProductId,
+                    Name = created.Name,
+                    CreatedAt = created.CreatedAt,
+                    UpdatedAt = created.UpdatedAt,
+                    CreatedBy = created.CreatedBy,
+                    UpdatedBy = created.UpdatedBy
+                };
+                return this.OkResponse(dto, "Tạo danh mục sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {

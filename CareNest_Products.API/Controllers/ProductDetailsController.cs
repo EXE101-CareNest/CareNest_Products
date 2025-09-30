@@ -4,6 +4,7 @@ using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Interfaces.CQRS;
 using CareNest_Products.API.Extensions;
 using MediatR;
+using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareNest_Products.API.Controllers
@@ -16,10 +17,12 @@ namespace CareNest_Products.API.Controllers
     public class ProductDetailsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUseCaseDispatcher _dispatcher;
 
-        public ProductDetailsController(IMediator mediator)
+        public ProductDetailsController(IMediator mediator, IUseCaseDispatcher dispatcher)
         {
             _mediator = mediator;
+            _dispatcher = dispatcher;
         }
 
         /// <summary>
@@ -117,8 +120,24 @@ namespace CareNest_Products.API.Controllers
                 }
 
                 command.CategoryId = categoryId;
-                var result = await _mediator.Send(command);
-                return this.OkResponse(result, "Tạo chi tiết sản phẩm thành công");
+                var created = await _dispatcher.DispatchAsync<CreateProductDetailCommand, CareNest_Products.Domain.Entities.ProductDetail>(command);
+                var dto = new ProductDetailResponse
+                {
+                    Id = created.Id,
+                    CategoryId = created.CategoryId,
+                    Name = created.Name,
+                    Price = created.Price,
+                    Status = created.Status,
+                    Discount = created.Discount,
+                    IsDefault = created.IsDefault,
+                    ImgUrls = created.ImgUrls,
+                    QuantityInStock = created.QuantityInStock,
+                    CreatedAt = created.CreatedAt,
+                    UpdatedAt = created.UpdatedAt,
+                    CreatedBy = created.CreatedBy,
+                    UpdatedBy = created.UpdatedBy
+                };
+                return this.OkResponse(dto, "Tạo chi tiết sản phẩm thành công");
             }
             catch (ArgumentException ex)
             {

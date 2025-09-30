@@ -36,6 +36,8 @@ namespace CareNest_Products.Application
             services.AddScoped<ICommandHandler<CreateProductCommand, Product>, CreateProductCommandHandler>();
             services.AddScoped<ICommandHandler<UpdateProductCommand, Product>, UpdateProductCommandHandler>();
             services.AddScoped<ICommandHandler<DeleteProductCommand>, DeleteProductCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateProductCategoryCommand, ProductCategory>, CreateProductCategoryCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateProductDetailCommand, ProductDetail>, CreateProductDetailCommandHandler>();
 
             return services;
         }
