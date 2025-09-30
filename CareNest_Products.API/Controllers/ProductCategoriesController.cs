@@ -1,5 +1,7 @@
 using CareNest_Products.Application.Common;
 using CareNest_Products.Application.Features.Commands.Create;
+using CareNest_Products.Application.Features.Commands.Update;
+using CareNest_Products.Application.Features.Commands.Delete;
 using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Interfaces.CQRS;
 using CareNest_Products.Application.Features.Queries.GetAllPaging;
@@ -66,6 +68,73 @@ namespace CareNest_Products.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Cập nhật danh mục sản phẩm
+        /// </summary>
+        /// <param name="id">ID danh mục</param>
+        /// <param name="command">Thông tin cập nhật</param>
+        /// <returns>Danh mục đã cập nhật</returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] UpdateProductCategoryCommand command)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+                    return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
+                }
+
+                command.Id = id;
+                var updated = await _dispatcher.DispatchAsync<UpdateProductCategoryCommand, CareNest_Products.Domain.Entities.ProductCategory>(command);
+                var dto = new ProductCategoryResponse
+                {
+                    Id = updated.Id,
+                    ProductId = updated.ProductId,
+                    Name = updated.Name,
+                    CreatedAt = updated.CreatedAt,
+                    UpdatedAt = updated.UpdatedAt,
+                    CreatedBy = updated.CreatedBy,
+                    UpdatedBy = updated.UpdatedBy
+                };
+                return this.OkResponse(dto, "Cập nhật danh mục sản phẩm thành công");
+            }
+            catch (ArgumentException ex)
+            {
+                return this.ErrorResponse<object>(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return this.ErrorResponse<object>($"Lỗi khi cập nhật danh mục sản phẩm: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Xóa danh mục sản phẩm
+        /// </summary>
+        /// <param name="id">ID danh mục</param>
+        /// <returns>Kết quả xóa</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var command = new DeleteProductCategoryCommand { Id = id };
+                await _dispatcher.DispatchAsync(command);
+                return this.OkResponse("Xóa danh mục sản phẩm thành công");
+            }
+            catch (ArgumentException ex)
+            {
+                return this.ErrorResponse<object>(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return this.ErrorResponse<object>($"Lỗi khi xóa danh mục sản phẩm: {ex.Message}");
+            }
+        }
         /// <summary>
         /// Lấy danh mục của sản phẩm
         /// </summary>

@@ -1,5 +1,7 @@
 using CareNest_Products.Application.Common;
 using CareNest_Products.Application.Features.Commands.Create;
+using CareNest_Products.Application.Features.Commands.Update;
+using CareNest_Products.Application.Features.Commands.Delete;
 using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Interfaces.CQRS;
 using CareNest_Products.API.Extensions;
@@ -71,6 +73,80 @@ namespace CareNest_Products.API.Controllers
             catch (Exception ex)
             {
                 return this.ErrorResponse<object>($"Lỗi khi lấy danh sách chi tiết sản phẩm: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật chi tiết sản phẩm
+        /// </summary>
+        /// <param name="id">ID chi tiết</param>
+        /// <param name="command">Thông tin cập nhật</param>
+        /// <returns>Chi tiết đã cập nhật</returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] UpdateProductDetailCommand command)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+                    return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
+                }
+
+                command.Id = id;
+                var updated = await _dispatcher.DispatchAsync<UpdateProductDetailCommand, CareNest_Products.Domain.Entities.ProductDetail>(command);
+                var dto = new ProductDetailResponse
+                {
+                    Id = updated.Id,
+                    CategoryId = updated.CategoryId,
+                    Name = updated.Name,
+                    Price = updated.Price,
+                    Status = updated.Status,
+                    Discount = updated.Discount,
+                    IsDefault = updated.IsDefault,
+                    ImgUrls = updated.ImgUrls,
+                    QuantityInStock = updated.QuantityInStock,
+                    CreatedAt = updated.CreatedAt,
+                    UpdatedAt = updated.UpdatedAt,
+                    CreatedBy = updated.CreatedBy,
+                    UpdatedBy = updated.UpdatedBy
+                };
+                return this.OkResponse(dto, "Cập nhật chi tiết sản phẩm thành công");
+            }
+            catch (ArgumentException ex)
+            {
+                return this.ErrorResponse<object>(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return this.ErrorResponse<object>($"Lỗi khi cập nhật chi tiết sản phẩm: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Xóa chi tiết sản phẩm
+        /// </summary>
+        /// <param name="id">ID chi tiết</param>
+        /// <returns>Kết quả xóa</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var command = new DeleteProductDetailCommand { Id = id };
+                await _dispatcher.DispatchAsync(command);
+                return this.OkResponse("Xóa chi tiết sản phẩm thành công");
+            }
+            catch (ArgumentException ex)
+            {
+                return this.ErrorResponse<object>(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return this.ErrorResponse<object>($"Lỗi khi xóa chi tiết sản phẩm: {ex.Message}");
             }
         }
 

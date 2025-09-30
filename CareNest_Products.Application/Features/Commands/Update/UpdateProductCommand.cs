@@ -1,5 +1,6 @@
 using CareNest_Products.Application.Interfaces.CQRS.Commands;
 using CareNest_Products.Domain.Entities;
+using System.Text.Json.Serialization;
 
 namespace CareNest_Products.Application.Features.Commands.Update
 {
@@ -11,7 +12,8 @@ namespace CareNest_Products.Application.Features.Commands.Update
         /// <summary>
         /// ID của sản phẩm cần cập nhật
         /// </summary>
-        public string Id { get; set; }
+        [JsonIgnore]
+        public string? Id { get; set; }
 
         /// <summary>
         /// Tên sản phẩm
