@@ -31,7 +31,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             {
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString("N"),
                     ShopId = "11111111-1111-1111-1111-111111111111", // Shop ID mẫu
                     ProductName = "iPhone 15 Pro Max",
                     Description = "Điện thoại iPhone 15 Pro Max với chip A17 Pro mạnh mẽ, camera 48MP và màn hình Super Retina XDR 6.7 inch",
@@ -42,7 +42,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString("N"),
                     ShopId = "11111111-1111-1111-1111-111111111111",
                     ProductName = "Samsung Galaxy S24 Ultra",
                     Description = "Điện thoại Samsung Galaxy S24 Ultra với S Pen, camera 200MP và màn hình Dynamic AMOLED 2X 6.8 inch",
@@ -53,7 +53,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString("N"),
                     ShopId = "22222222-2222-2222-2222-222222222222", // Shop khác
                     ProductName = "MacBook Pro M3",
                     Description = "Laptop MacBook Pro M3 với chip Apple M3, màn hình Liquid Retina XDR 14 inch và hiệu năng vượt trội",
@@ -64,7 +64,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString("N"),
                     ShopId = "22222222-2222-2222-2222-222222222222",
                     ProductName = "Dell XPS 13",
                     Description = "Laptop Dell XPS 13 với Intel Core i7, màn hình 13.4 inch InfinityEdge và thiết kế siêu mỏng",
@@ -86,7 +86,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Categories cho iPhone 15 Pro Max
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[0].Id,
                 Name = "Màu sắc",
                 CreatedAt = DateTime.UtcNow,
@@ -95,7 +95,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[0].Id,
                 Name = "Dung lượng",
                 CreatedAt = DateTime.UtcNow,
@@ -105,7 +105,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Categories cho Samsung Galaxy S24 Ultra
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[1].Id,
                 Name = "Màu sắc",
                 CreatedAt = DateTime.UtcNow,
@@ -114,7 +114,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[1].Id,
                 Name = "Dung lượng",
                 CreatedAt = DateTime.UtcNow,
@@ -124,7 +124,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Categories cho MacBook Pro M3
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[2].Id,
                 Name = "Cấu hình",
                 CreatedAt = DateTime.UtcNow,
@@ -133,7 +133,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[2].Id,
                 Name = "Màu sắc",
                 CreatedAt = DateTime.UtcNow,
@@ -143,7 +143,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Categories cho Dell XPS 13
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[3].Id,
                 Name = "Cấu hình",
                 CreatedAt = DateTime.UtcNow,
@@ -152,7 +152,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             categories.Add(new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 ProductId = products[3].Id,
                 Name = "Màu sắc",
                 CreatedAt = DateTime.UtcNow,
@@ -170,7 +170,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho iPhone 15 Pro Max - Màu sắc
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[0].Id,
                 Name = "Titanium Tự nhiên",
                 Price = 29990000, // 29,990,000 VND
@@ -184,7 +184,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[0].Id,
                 Name = "Titanium Xanh",
                 Price = 29990000,
@@ -198,7 +198,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[0].Id,
                 Name = "Titanium Trắng",
                 Price = 29990000,
@@ -213,7 +213,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho iPhone 15 Pro Max - Dung lượng
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[1].Id,
                 Name = "256GB",
                 Price = 29990000,
@@ -227,7 +227,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[1].Id,
                 Name = "512GB",
                 Price = 33990000,
@@ -241,7 +241,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[1].Id,
                 Name = "1TB",
                 Price = 37990000,
@@ -256,7 +256,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho Samsung Galaxy S24 Ultra - Màu sắc
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[2].Id,
                 Name = "Titanium Đen",
                 Price = 27990000,
@@ -270,7 +270,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[2].Id,
                 Name = "Titanium Vàng",
                 Price = 27990000,
@@ -285,7 +285,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho Samsung Galaxy S24 Ultra - Dung lượng
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[3].Id,
                 Name = "256GB",
                 Price = 27990000,
@@ -299,7 +299,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[3].Id,
                 Name = "512GB",
                 Price = 30990000,
@@ -314,7 +314,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho MacBook Pro M3 - Cấu hình
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[4].Id,
                 Name = "M3 8-core CPU, 10-core GPU, 8GB RAM, 512GB SSD",
                 Price = 42990000,
@@ -328,7 +328,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[4].Id,
                 Name = "M3 8-core CPU, 10-core GPU, 16GB RAM, 1TB SSD",
                 Price = 51990000,
@@ -343,7 +343,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho MacBook Pro M3 - Màu sắc
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[5].Id,
                 Name = "Xám Space",
                 Price = 0, // Giá sẽ được tính từ cấu hình
@@ -357,7 +357,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[5].Id,
                 Name = "Bạc",
                 Price = 0,
@@ -372,7 +372,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho Dell XPS 13 - Cấu hình
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[6].Id,
                 Name = "Intel Core i5, 8GB RAM, 512GB SSD",
                 Price = 25990000,
@@ -386,7 +386,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[6].Id,
                 Name = "Intel Core i7, 16GB RAM, 1TB SSD",
                 Price = 32990000,
@@ -401,7 +401,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
             // Product Details cho Dell XPS 13 - Màu sắc
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[7].Id,
                 Name = "Platinum Silver",
                 Price = 0,
@@ -415,7 +415,7 @@ namespace CareNest_Products.Infrastructure.Persistences.Database
 
             productDetails.Add(new ProductDetail
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString("N"),
                 CategoryId = categories[7].Id,
                 Name = "Frost White",
                 Price = 0,

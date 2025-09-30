@@ -57,7 +57,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         private System.Linq.Expressions.Expression<Func<ProductDetail, bool>>? CreatePredicate(GetAllProductDetailsPagingQuery query)
         {
             return pd =>
-                (!query.CategoryId.HasValue || pd.CategoryId == query.CategoryId.Value) &&
+                (string.IsNullOrWhiteSpace(query.CategoryId) || pd.CategoryId == query.CategoryId) &&
                 (string.IsNullOrEmpty(query.SearchTerm) || pd.Name.Contains(query.SearchTerm)) &&
                 (!query.Status.HasValue || pd.Status == query.Status.Value) &&
                 (!query.MinPrice.HasValue || pd.Price >= query.MinPrice.Value) &&
