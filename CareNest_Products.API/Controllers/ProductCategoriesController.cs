@@ -3,8 +3,8 @@ using CareNest_Products.Application.Features.Commands.Create;
 using CareNest_Products.Application.Features.Commands.Update;
 using CareNest_Products.Application.Features.Commands.Delete;
 using CareNest_Products.Application.Features.Queries.GetAllPaging;
+using CareNest_Products.Application.Features.Queries.GetById;
 using CareNest_Products.Application.Interfaces.CQRS;
-using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.API.Extensions;
 using MediatR;
 using CareNest_Products.Application.Interfaces.CQRS;
@@ -65,6 +65,30 @@ namespace CareNest_Products.API.Controllers
             catch (Exception ex)
             {
                 return this.ErrorResponse<object>($"Lỗi khi lấy danh sách danh mục sản phẩm: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Lấy danh mục sản phẩm theo ID
+        /// </summary>
+        /// <param name="id">ID danh mục</param>
+        /// <returns>Thông tin danh mục sản phẩm</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            try
+            {
+                var query = new GetByIdProductCategoryQuery { Id = id };
+                var result = await _mediator.Send(query);
+                return this.OkResponse(result, "Lấy danh mục sản phẩm thành công");
+            }
+            catch (ArgumentException ex)
+            {
+                return this.ErrorResponse<object>(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return this.ErrorResponse<object>($"Lỗi khi lấy danh mục sản phẩm: {ex.Message}");
             }
         }
 
