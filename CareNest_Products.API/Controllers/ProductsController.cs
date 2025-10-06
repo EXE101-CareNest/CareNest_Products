@@ -35,7 +35,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="sortColumn">Cột sắp xếp</param>
         /// <param name="sortDirection">Hướng sắp xếp (asc/desc)</param>
         /// <param name="searchTerm">Tìm kiếm theo tên sản phẩm</param>
-        /// <param name="shopId">Lọc theo ShopId</param>
+        /// <param name="productCategoryId">Lọc theo ProductCategoryId</param>
         /// <param name="status">Lọc theo trạng thái</param>
         /// <returns>Danh sách sản phẩm có phân trang</returns>
         [HttpGet]
@@ -45,7 +45,7 @@ namespace CareNest_Products.API.Controllers
             [FromQuery] string? sortColumn = null,
             [FromQuery] string? sortDirection = "asc",
             [FromQuery] string? searchTerm = null,
-            [FromQuery] string? shopId = null,
+            [FromQuery] string? productCategoryId = null,
             [FromQuery] bool? status = null)
         {
             try
@@ -57,7 +57,7 @@ namespace CareNest_Products.API.Controllers
                     SortColumn = sortColumn,
                     SortDirection = sortDirection,
                     SearchTerm = searchTerm,
-                    ShopId = shopId,
+                    ProductCategoryId = productCategoryId,
                     Status = status
                 };
 

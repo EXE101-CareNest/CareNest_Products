@@ -29,9 +29,9 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         public string? SortDirection { get; set; } = "asc";
 
         /// <summary>
-        /// Lọc theo ProductId
+        /// Lọc theo ShopId
         /// </summary>
-        public string? ProductId { get; set; }
+        public string? ShopId { get; set; }
 
         /// <summary>
         /// Tìm kiếm theo tên danh mục

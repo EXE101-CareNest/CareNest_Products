@@ -32,7 +32,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
                 selector: pc => new ProductCategoryResponse
                 {
                     Id = pc.Id,
-                    ProductId = pc.ProductId,
+                    ShopId = pc.ShopId,
                     Name = pc.Name,
                     CreatedAt = pc.CreatedAt,
                     UpdatedAt = pc.UpdatedAt,
@@ -51,7 +51,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         private System.Linq.Expressions.Expression<Func<ProductCategory, bool>>? CreatePredicate(GetAllProductCategoriesPagingQuery query)
         {
             return pc =>
-                (string.IsNullOrWhiteSpace(query.ProductId) || pc.ProductId == query.ProductId) &&
+                (string.IsNullOrWhiteSpace(query.ShopId) || pc.ShopId == query.ShopId) &&
                 (string.IsNullOrEmpty(query.SearchTerm) || pc.Name.Contains(query.SearchTerm));
         }
 

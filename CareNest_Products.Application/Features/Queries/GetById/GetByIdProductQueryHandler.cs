@@ -28,12 +28,12 @@ namespace CareNest_Products.Application.Features.Queries.GetById
 
             // Lấy danh mục thuộc sản phẩm bằng query repo
             var categoryRepo = _unitOfWork.GetRepository<ProductCategory>();
-            var categories = await categoryRepo.FindAsync(pc => pc.ProductId == product.Id,
+            var categories = await categoryRepo.FindAsync(pc => pc.Id == product.ProductCategoryId,
                 orderBy: q => q.OrderBy(c => c.CreatedAt),
                 selector: c => new ProductCategoryResponse
                 {
                     Id = c.Id,
-                    ProductId = c.ProductId,
+                    ShopId = c.ShopId,
                     Name = c.Name,
                     CreatedAt = c.CreatedAt,
                     UpdatedAt = c.UpdatedAt,
@@ -44,7 +44,7 @@ namespace CareNest_Products.Application.Features.Queries.GetById
             return new ProductWithCategoriesResponse
             {
                 Id = product.Id,
-                ShopId = product.ShopId,
+                ProductCategoryId = product.ProductCategoryId,
                 ProductName = product.ProductName,
                 Description = product.Description,
                 Status = product.Status,

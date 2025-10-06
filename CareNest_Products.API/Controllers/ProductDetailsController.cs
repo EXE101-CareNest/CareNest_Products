@@ -35,7 +35,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="pageSize">Số lượng item per page (mặc định: 10)</param>
         /// <param name="sortColumn">Cột sắp xếp</param>
         /// <param name="sortDirection">Hướng sắp xếp (asc/desc)</param>
-        /// <param name="categoryId">Lọc theo CategoryId</param>
+        /// <param name="productId">Lọc theo ProductId</param>
         /// <param name="searchTerm">Tìm kiếm theo tên chi tiết</param>
         /// <param name="status">Lọc theo trạng thái kho</param>
         /// <param name="minPrice">Lọc theo giá tối thiểu</param>
@@ -47,7 +47,7 @@ namespace CareNest_Products.API.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortColumn = null,
             [FromQuery] string? sortDirection = "asc",
-            [FromQuery] string? categoryId = null,
+            [FromQuery] string? productId = null,
             [FromQuery] string? searchTerm = null,
             [FromQuery] bool? status = null,
             [FromQuery] int? minPrice = null,
@@ -61,7 +61,7 @@ namespace CareNest_Products.API.Controllers
                     PageSize = pageSize,
                     SortColumn = sortColumn,
                     SortDirection = sortDirection,
-                    CategoryId = categoryId,
+                    ProductId = productId,
                     SearchTerm = searchTerm,
                     Status = status,
                     MinPrice = minPrice,
@@ -126,7 +126,7 @@ namespace CareNest_Products.API.Controllers
                 var dto = new ProductDetailResponse
                 {
                     Id = updated.Id,
-                    CategoryId = updated.CategoryId,
+                    ProductId = updated.ProductId,
                     Name = updated.Name,
                     Price = updated.Price,
                     Status = updated.Status,
@@ -176,18 +176,18 @@ namespace CareNest_Products.API.Controllers
         }
 
         /// <summary>
-        /// Lấy chi tiết theo danh mục
+        /// Lấy chi tiết theo sản phẩm
         /// </summary>
-        /// <param name="categoryId">ID của danh mục</param>
-        /// <returns>Danh sách chi tiết của danh mục</returns>
-        [HttpGet("categories/{categoryId}")]
-        public async Task<IActionResult> GetByCategoryId(string categoryId)
+        /// <param name="productId">ID của sản phẩm</param>
+        /// <returns>Danh sách chi tiết của sản phẩm</returns>
+        [HttpGet("products/{productId}")]
+        public async Task<IActionResult> GetByProductId(string productId)
         {
             try
             {
                 var query = new GetAllProductDetailsPagingQuery
                 {
-                    CategoryId = categoryId,
+                    ProductId = productId,
                     PageSize = 1000 // Lấy tất cả chi tiết của danh mục
                 };
 
@@ -201,13 +201,13 @@ namespace CareNest_Products.API.Controllers
         }
 
         /// <summary>
-        /// Tạo chi tiết mới cho danh mục
+        /// Tạo chi tiết mới cho sản phẩm
         /// </summary>
-        /// <param name="categoryId">ID của danh mục</param>
-        /// <param name="command">Thông tin chi tiết mới</param>
+        /// <param name="productId">ID của sản phẩm</param>
+        /// <param name="request">Thông tin chi tiết mới</param>
         /// <returns>Chi tiết vừa tạo</returns>
-        [HttpPost("categories/{categoryId}")]
-        public async Task<IActionResult> Create(string categoryId, [FromBody] CreateProductDetailCommand command)
+        [HttpPost("products/{productId}")]
+        public async Task<IActionResult> Create(string productId, [FromBody] CreateProductDetailRequest request)
         {
             try
             {
@@ -220,12 +220,22 @@ namespace CareNest_Products.API.Controllers
                     return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
                 }
 
-                command.CategoryId = categoryId;
+                var command = new CreateProductDetailCommand
+                {
+                    ProductId = productId,
+                    Name = request.Name,
+                    Price = request.Price,
+                    Status = request.Status,
+                    Discount = request.Discount,
+                    IsDefault = request.IsDefault,
+                    ImgUrls = request.ImgUrls,
+                    QuantityInStock = request.QuantityInStock
+                };
                 var created = await _dispatcher.DispatchAsync<CreateProductDetailCommand, CareNest_Products.Domain.Entities.ProductDetail>(command);
                 var dto = new ProductDetailResponse
                 {
                     Id = created.Id,
-                    CategoryId = created.CategoryId,
+                    ProductId = created.ProductId,
                     Name = created.Name,
                     Price = created.Price,
                     Status = created.Status,

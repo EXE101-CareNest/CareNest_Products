@@ -12,7 +12,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
       carenest-network:
-        ipv4_address: 192.168.0.13
+        ipv4_address: 192.168.0.17
 
 networks:
   carenest-network:

@@ -34,9 +34,9 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         public string? SearchTerm { get; set; }
 
         /// <summary>
-        /// Lọc theo ShopId (string)
+        /// Lọc theo ProductCategoryId
         /// </summary>
-        public string? ShopId { get; set; }
+        public string? ProductCategoryId { get; set; }
 
         /// <summary>
         /// Lọc theo trạng thái

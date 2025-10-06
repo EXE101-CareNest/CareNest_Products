@@ -24,17 +24,15 @@ namespace CareNest_Products.Application.Features.Commands.Create
                 throw new ArgumentException("Tên danh mục không được để trống");
             }
 
-            // Kiểm tra sản phẩm có tồn tại không
-            var product = await _unitOfWork.GetRepository<Product>().GetByIdAsync(command.ProductId);
-            if (product == null)
+            if (string.IsNullOrWhiteSpace(command.ShopId))
             {
-                throw new ArgumentException($"Không tìm thấy sản phẩm với ID: {command.ProductId}");
+                throw new ArgumentException("ShopId không được để trống");
             }
 
             // Tạo entity mới
             var category = new ProductCategory
             {
-                ProductId = command.ProductId,
+                ShopId = command.ShopId,
                 Name = command.Name,
                 CreatedAt = DateTimeOffset.UtcNow
             };

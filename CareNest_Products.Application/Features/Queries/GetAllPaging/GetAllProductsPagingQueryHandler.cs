@@ -32,7 +32,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
                 selector: p => new ProductResponse
                 {
                     Id = p.Id,
-                    ShopId = p.ShopId,
+                    ProductCategoryId = p.ProductCategoryId,
                     ProductName = p.ProductName,
                     Description = p.Description,
                     Status = p.Status,
@@ -55,7 +55,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         {
             return p =>
                 (string.IsNullOrEmpty(query.SearchTerm) || p.ProductName.Contains(query.SearchTerm)) &&
-                (string.IsNullOrEmpty(query.ShopId) || p.ShopId == query.ShopId) &&
+                (string.IsNullOrEmpty(query.ProductCategoryId) || p.ProductCategoryId == query.ProductCategoryId) &&
                 (!query.Status.HasValue || p.Status == query.Status.Value);
         }
 

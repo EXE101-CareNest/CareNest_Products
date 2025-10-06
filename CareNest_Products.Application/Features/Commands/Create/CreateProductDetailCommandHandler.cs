@@ -39,17 +39,22 @@ namespace CareNest_Products.Application.Features.Commands.Create
                 throw new ArgumentException("Phần trăm giảm giá phải từ 0 đến 100");
             }
 
-            // Kiểm tra danh mục có tồn tại không
-            var category = await _unitOfWork.GetRepository<ProductCategory>().GetByIdAsync(command.CategoryId);
-            if (category == null)
+            if (string.IsNullOrWhiteSpace(command.ProductId))
             {
-                throw new ArgumentException($"Không tìm thấy danh mục với ID: {command.CategoryId}");
+                throw new ArgumentException("ProductId không được để trống");
+            }
+
+            // Kiểm tra sản phẩm có tồn tại không
+            var product = await _unitOfWork.GetRepository<Product>().GetByIdAsync(command.ProductId);
+            if (product == null)
+            {
+                throw new ArgumentException($"Không tìm thấy sản phẩm với ID: {command.ProductId}");
             }
 
             // Tạo entity mới
             var detail = new ProductDetail
             {
-                CategoryId = command.CategoryId,
+                ProductId = command.ProductId,
                 Name = command.Name,
                 Price = command.Price,
                 Status = command.Status,

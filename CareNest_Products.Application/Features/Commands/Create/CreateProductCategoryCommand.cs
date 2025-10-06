@@ -10,10 +10,9 @@ namespace CareNest_Products.Application.Features.Commands.Create
     public class CreateProductCategoryCommand : ICommand<ProductCategory>
     {
         /// <summary>
-        /// ID của sản phẩm
+        /// ID của shop
         /// </summary>
-        [JsonIgnore]
-        public string? ProductId { get; set; }
+        public string ShopId { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên danh mục/phân loại

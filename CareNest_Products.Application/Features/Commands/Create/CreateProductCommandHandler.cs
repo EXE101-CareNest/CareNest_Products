@@ -31,23 +31,22 @@ namespace CareNest_Products.Application.Features.Commands.Create
             {
                 throw new ArgumentException("Hình ảnh sản phẩm không được để trống");
             }
-            if (string.IsNullOrWhiteSpace(command.ShopId))
+            if (string.IsNullOrWhiteSpace(command.ProductCategoryId))
             {
-                throw new ArgumentException("ShopId không được để trống");
+                throw new ArgumentException("ProductCategoryId không được để trống");
             }
 
-            // Dùng chuỗi ShopId nguyên vẹn (hỗ trợ có/không có dấu gạch)
-            var shopIdStr = command.ShopId.Trim();
-            var shopCheckResult = await _apiService.GetAsync<object>("shop", $"/api/Shop/{shopIdStr}");
-            if (!shopCheckResult.IsSuccess)
+            // Kiểm tra danh mục sản phẩm có tồn tại không
+            var category = await _unitOfWork.GetRepository<ProductCategory>().GetByIdAsync(command.ProductCategoryId);
+            if (category == null)
             {
-                throw new ArgumentException($"Shop với ID {command.ShopId} không tồn tại hoặc không thể truy cập: {shopCheckResult.Message}");
+                throw new ArgumentException($"Không tìm thấy danh mục sản phẩm với ID: {command.ProductCategoryId}");
             }
 
             // Tạo entity mới
             var product = new Product
             {
-                ShopId = shopIdStr,
+                ProductCategoryId = command.ProductCategoryId,
                 ProductName = command.ProductName,
                 Description = command.Description,
                 Status = command.Status,

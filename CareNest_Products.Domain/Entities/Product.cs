@@ -9,10 +9,10 @@ namespace CareNest_Products.Domain.Entities
     public class Product : BaseEntity
     {
         /// <summary>
-        /// ID của shop (Foreign Key)
+        /// ID của danh mục sản phẩm (Foreign Key)
         /// </summary>
         [Required]
-        public string ShopId { get; set; } = string.Empty;
+        public string ProductCategoryId { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên sản phẩm (1-100 ký tự)
@@ -40,8 +40,13 @@ namespace CareNest_Products.Domain.Entities
 
         // Navigation Properties
         /// <summary>
-        /// Danh sách các danh mục sản phẩm
+        /// Danh mục sản phẩm chứa sản phẩm này
         /// </summary>
-        public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+        public virtual ProductCategory ProductCategory { get; set; } = null!;
+
+        /// <summary>
+        /// Danh sách các chi tiết sản phẩm
+        /// </summary>
+        public virtual ICollection<ProductDetail> ProductDetails { get; set; } = new List<ProductDetail>();
     }
 }

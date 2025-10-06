@@ -8,7 +8,7 @@ namespace CareNest_Products.Application.Features.Queries.GetById
     public class ProductWithCategoriesResponse
     {
         public string Id { get; set; }
-        public string ShopId { get; set; }
+        public string ProductCategoryId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public string? Description { get; set; }
         public bool Status { get; set; }

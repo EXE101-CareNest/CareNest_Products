@@ -29,7 +29,7 @@ namespace CareNest_Products.Application.Features.Queries.GetById
             return new ProductCategoryResponse
             {
                 Id = category.Id,
-                ProductId = category.ProductId,
+                ShopId = category.ShopId,
                 Name = category.Name,
                 CreatedAt = category.CreatedAt,
                 UpdatedAt = category.UpdatedAt,

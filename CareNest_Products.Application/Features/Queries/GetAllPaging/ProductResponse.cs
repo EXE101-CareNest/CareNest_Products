@@ -6,7 +6,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
     public class ProductResponse
     {
         public string Id { get; set; }
-        public string ShopId { get; set; } = string.Empty;
+        public string ProductCategoryId { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public string? Description { get; set; }
         public bool Status { get; set; }

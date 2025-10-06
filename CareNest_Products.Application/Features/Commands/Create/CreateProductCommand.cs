@@ -9,9 +9,9 @@ namespace CareNest_Products.Application.Features.Commands.Create
     public class CreateProductCommand : ICommand<Product>
     {
         /// <summary>
-        /// ID của shop (chấp nhận chuỗi GUID có/không có dấu gạch)
+        /// ID của danh mục sản phẩm
         /// </summary>
-        public string ShopId { get; set; } = string.Empty;
+        public string ProductCategoryId { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên sản phẩm

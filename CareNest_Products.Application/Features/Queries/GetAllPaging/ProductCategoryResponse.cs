@@ -6,7 +6,7 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
     public class ProductCategoryResponse
     {
         public string Id { get; set; }
-        public string ProductId { get; set; }
+        public string ShopId { get; set; }
         public string Name { get; set; } = string.Empty;
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }
