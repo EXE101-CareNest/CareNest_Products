@@ -6,17 +6,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CareNest_Products.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class @new : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    ShopId = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ShopId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    ProductCategoryId = table.Column<string>(type: "text", nullable: false),
                     ProductName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     Status = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
@@ -29,27 +46,10 @@ namespace CareNest_Products.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductCategories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductCategories_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_Products_ProductCategories_ProductCategoryId",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "ProductCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -58,8 +58,8 @@ namespace CareNest_Products.Infrastructure.Migrations
                 name: "ProductDetails",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    ProductId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Price = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
@@ -76,9 +76,9 @@ namespace CareNest_Products.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ProductDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductDetails_ProductCategories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "ProductCategories",
+                        name: "FK_ProductDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -89,14 +89,9 @@ namespace CareNest_Products.Infrastructure.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCategories_ProductId",
+                name: "IX_ProductCategories_ShopId",
                 table: "ProductCategories",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDetails_CategoryId",
-                table: "ProductDetails",
-                column: "CategoryId");
+                column: "ShopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductDetails_IsDefault",
@@ -114,19 +109,24 @@ namespace CareNest_Products.Infrastructure.Migrations
                 column: "Price");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductDetails_ProductId",
+                table: "ProductDetails",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductDetails_Status",
                 table: "ProductDetails",
                 column: "Status");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductCategoryId",
+                table: "Products",
+                column: "ProductCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductName",
                 table: "Products",
                 column: "ProductName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_ShopId",
-                table: "Products",
-                column: "ShopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Status",
@@ -141,10 +141,10 @@ namespace CareNest_Products.Infrastructure.Migrations
                 name: "ProductDetails");
 
             migrationBuilder.DropTable(
-                name: "ProductCategories");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "ProductCategories");
         }
     }
 }

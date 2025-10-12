@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareNest_Products.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250927034104_AddSeedData")]
-    partial class AddSeedData
+    [Migration("20251012170102_new")]
+    partial class @new
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,8 @@ namespace CareNest_Products.Infrastructure.Migrations
 
             modelBuilder.Entity("CareNest_Products.Domain.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -45,13 +44,14 @@ namespace CareNest_Products.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ProductCategoryId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<Guid>("ShopId")
-                        .HasColumnType("uuid");
 
                     b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
@@ -66,9 +66,9 @@ namespace CareNest_Products.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductName");
+                    b.HasIndex("ProductCategoryId");
 
-                    b.HasIndex("ShopId");
+                    b.HasIndex("ProductName");
 
                     b.HasIndex("Status");
 
@@ -77,9 +77,8 @@ namespace CareNest_Products.Infrastructure.Migrations
 
             modelBuilder.Entity("CareNest_Products.Domain.Entities.ProductCategory", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -92,8 +91,9 @@ namespace CareNest_Products.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ShopId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -105,19 +105,15 @@ namespace CareNest_Products.Infrastructure.Migrations
 
                     b.HasIndex("Name");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ShopId");
 
                     b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("CareNest_Products.Domain.Entities.ProductDetail", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -145,6 +141,10 @@ namespace CareNest_Products.Infrastructure.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("integer");
 
@@ -161,23 +161,34 @@ namespace CareNest_Products.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("IsDefault");
 
                     b.HasIndex("Name");
 
                     b.HasIndex("Price");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("Status");
 
                     b.ToTable("ProductDetails");
                 });
 
-            modelBuilder.Entity("CareNest_Products.Domain.Entities.ProductCategory", b =>
+            modelBuilder.Entity("CareNest_Products.Domain.Entities.Product", b =>
+                {
+                    b.HasOne("CareNest_Products.Domain.Entities.ProductCategory", "ProductCategory")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductCategory");
+                });
+
+            modelBuilder.Entity("CareNest_Products.Domain.Entities.ProductDetail", b =>
                 {
                     b.HasOne("CareNest_Products.Domain.Entities.Product", "Product")
-                        .WithMany("ProductCategories")
+                        .WithMany("ProductDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -185,25 +196,14 @@ namespace CareNest_Products.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("CareNest_Products.Domain.Entities.ProductDetail", b =>
-                {
-                    b.HasOne("CareNest_Products.Domain.Entities.ProductCategory", "ProductCategory")
-                        .WithMany("ProductDetails")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductCategory");
-                });
-
             modelBuilder.Entity("CareNest_Products.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("ProductCategories");
+                    b.Navigation("ProductDetails");
                 });
 
             modelBuilder.Entity("CareNest_Products.Domain.Entities.ProductCategory", b =>
                 {
-                    b.Navigation("ProductDetails");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
