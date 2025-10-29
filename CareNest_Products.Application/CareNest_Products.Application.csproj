@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CareNest_Products.Domain\CareNest_Products.Domain.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

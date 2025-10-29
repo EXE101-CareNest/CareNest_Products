@@ -5,6 +5,8 @@ using CareNest_Products.Infrastructure;
 using CareNest_Products.Infrastructure.Services;
 using CareNest_Products.Infrastructure.Extensions;
 using CareNest_Products.API.Middleware;
+using Microsoft.AspNetCore.Http;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +46,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API quản lý sản phẩm với Clean Architecture và CQRS pattern"
     });
+    c.MapType<IFormFile>(() => new OpenApiSchema { Type = "string", Format = "binary" });
 });
 
 // Add HTTP Context Accessor
@@ -58,6 +61,7 @@ builder.Services.Configure<APIServiceOption>(builder.Configuration.GetSection("A
 // Add Services
 builder.Services.AddScoped<IAPIService, APIService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => {

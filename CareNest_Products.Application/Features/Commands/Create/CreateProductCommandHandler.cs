@@ -27,10 +27,7 @@ namespace CareNest_Products.Application.Features.Commands.Create
                 throw new ArgumentException("Tên sản phẩm không được để trống");
             }
 
-            if (string.IsNullOrWhiteSpace(command.ImgUrls))
-            {
-                throw new ArgumentException("Hình ảnh sản phẩm không được để trống");
-            }
+            // ImgUrls có thể được gán sau khi upload ảnh ở API layer
             if (string.IsNullOrWhiteSpace(command.ProductCategoryId))
             {
                 throw new ArgumentException("ProductCategoryId không được để trống");

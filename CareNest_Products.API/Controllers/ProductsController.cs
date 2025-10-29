@@ -6,6 +6,8 @@ using CareNest_Products.Application.Features.Queries.GetAllPaging;
 using CareNest_Products.Application.Features.Queries.GetById;
 using CareNest_Products.Application.Interfaces.CQRS;
 using CareNest_Products.API.Extensions;
+using CareNest_Products.API.Controllers.Models;
+using CareNest_Products.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,11 +22,13 @@ namespace CareNest_Products.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IUseCaseDispatcher _dispatcher;
+        private readonly IImageService _imageService;
 
-        public ProductsController(IMediator mediator, IUseCaseDispatcher dispatcher)
+        public ProductsController(IMediator mediator, IUseCaseDispatcher dispatcher, IImageService imageService)
         {
             _mediator = mediator;
             _dispatcher = dispatcher;
+            _imageService = imageService;
         }
 
         /// <summary>
@@ -97,10 +101,11 @@ namespace CareNest_Products.API.Controllers
         /// <summary>
         /// Tạo mới sản phẩm
         /// </summary>
-        /// <param name="command">Thông tin sản phẩm mới</param>
+        /// <param name="model">Form tạo sản phẩm (multipart/form-data)</param>
         /// <returns>Sản phẩm vừa tạo</returns>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] CreateProductFormModel model)
         {
             try
             {
@@ -111,6 +116,25 @@ namespace CareNest_Products.API.Controllers
                         .Select(e => e.ErrorMessage)
                         .ToList();
                     return this.ErrorResponse<object>("Dữ liệu không hợp lệ");
+                }
+
+                var command = new CreateProductCommand
+                {
+                    ProductCategoryId = model.ProductCategoryId,
+                    ProductName = model.ProductName,
+                    Description = model.Description,
+                    Status = model.Status,
+                    ImgUrls = string.Empty
+                };
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    await using var stream = model.ImageFile.OpenReadStream();
+                    var ownerId = "product";
+                    var folder = model.ProductCategoryId;
+                    var publicId = $"{model.ProductCategoryId}/{Guid.NewGuid()}";
+                    var uploaded = await _imageService.UploadAsync(stream, model.ImageFile.FileName, model.ImageFile.ContentType, ownerId, folder, publicId);
+                    command.ImgUrls = uploaded.OptimizedUrl ?? uploaded.SecureUrl;
                 }
 
                 var result = await _dispatcher.DispatchAsync<CreateProductCommand, CareNest_Products.Domain.Entities.Product>(command);
