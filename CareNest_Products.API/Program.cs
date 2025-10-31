@@ -7,6 +7,7 @@ using CareNest_Products.Infrastructure.Extensions;
 using CareNest_Products.API.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,22 +19,16 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 builder.Services.AddControllers();
-// CORS configuration
+// CORS configuration - allow all
 const string CorsPolicy = "FrontendPolicy";
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(CorsPolicy, policy =>
 	{
 		policy
-			.WithOrigins(
-				"http://localhost:3000",
-				"https://localhost:3000",
-				"http://localhost:4200",
-				"https://localhost:4200"
-			)
+			.AllowAnyOrigin()
 			.AllowAnyHeader()
-			.AllowAnyMethod()
-			.AllowCredentials();
+			.AllowAnyMethod();
 	});
 });
 
