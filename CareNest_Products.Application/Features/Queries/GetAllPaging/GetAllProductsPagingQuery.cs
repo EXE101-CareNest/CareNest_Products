@@ -42,5 +42,10 @@ namespace CareNest_Products.Application.Features.Queries.GetAllPaging
         /// Lọc theo trạng thái
         /// </summary>
         public bool? Status { get; set; }
+
+        /// <summary>
+        /// Lọc theo ShopId (qua ProductCategory)
+        /// </summary>
+        public string? ShopId { get; set; }
     }
 }

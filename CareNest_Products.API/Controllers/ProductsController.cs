@@ -41,6 +41,7 @@ namespace CareNest_Products.API.Controllers
         /// <param name="searchTerm">Tìm kiếm theo tên sản phẩm</param>
         /// <param name="productCategoryId">Lọc theo ProductCategoryId</param>
         /// <param name="status">Lọc theo trạng thái</param>
+        /// <param name="shopId">Lọc theo ShopId (qua danh mục)</param>
         /// <returns>Danh sách sản phẩm có phân trang</returns>
         [HttpGet]
         public async Task<IActionResult> GetPaging(
@@ -50,7 +51,8 @@ namespace CareNest_Products.API.Controllers
             [FromQuery] string? sortDirection = "asc",
             [FromQuery] string? searchTerm = null,
             [FromQuery] string? productCategoryId = null,
-            [FromQuery] bool? status = null)
+            [FromQuery] bool? status = null,
+            [FromQuery] string? shopId = null)
         {
             try
             {
@@ -62,7 +64,8 @@ namespace CareNest_Products.API.Controllers
                     SortDirection = sortDirection,
                     SearchTerm = searchTerm,
                     ProductCategoryId = productCategoryId,
-                    Status = status
+                    Status = status,
+                    ShopId = shopId
                 };
 
                 var result = await _mediator.Send(query);
