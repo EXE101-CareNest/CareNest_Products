@@ -26,14 +26,29 @@ namespace CareNest_Products.Infrastructure.Services
             string folder,
             string publicId)
         {
-            var baseUrl = _option.BaseUrlImage;
+            var baseUrl = _option.BaseUrlImage?.Trim();
             if (string.IsNullOrWhiteSpace(baseUrl))
             {
                 throw new InvalidOperationException("APIService:BaseUrlImage chưa được cấu hình");
             }
 
+            // Đảm bảo baseUrl là absolute URI (có http:// hoặc https://)
+            if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var baseUri))
+            {
+                throw new InvalidOperationException($"APIService:BaseUrlImage không phải là absolute URI hợp lệ. Giá trị hiện tại: {baseUrl}");
+            }
+
+            // Loại bỏ trailing slash từ baseUrl
+            baseUrl = baseUrl.TrimEnd('/');
+
             var endpoint = $"/api/Images/{Uri.EscapeDataString(ownerId)}";
             var fullUrl = $"{baseUrl}{endpoint}";
+            
+            // Validate fullUrl là absolute URI
+            if (!Uri.TryCreate(fullUrl, UriKind.Absolute, out var fullUri))
+            {
+                throw new InvalidOperationException($"URL không hợp lệ: {fullUrl}");
+            }
 
             using var form = new MultipartFormDataContent();
 
