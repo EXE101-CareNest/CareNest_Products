@@ -56,22 +56,29 @@ builder.Services.Configure<APIServiceOption>(options =>
     // Đọc từ appsettings trước
     builder.Configuration.GetSection("APIService").Bind(options);
     
-    // Đọc từ environment variables và override nếu có
-    // (Environment variables có priority cao hơn appsettings)
-    var baseUrlShop = Environment.GetEnvironmentVariable("BASE_URL_SHOP");
-    var baseUrlImage = Environment.GetEnvironmentVariable("BASE_URL_IMAGE");
+    // Đọc từ environment variables - thử cả 2 cách để đảm bảo tương thích
+    // Cách 1: Từ Configuration (ưu tiên - hoạt động với tất cả providers)
+    var baseUrlShopFromConfig = builder.Configuration["BASE_URL_SHOP"]?.Trim();
+    var baseUrlImageFromConfig = builder.Configuration["BASE_URL_IMAGE"]?.Trim();
     
-    // Nếu giá trị từ appsettings là placeholder (${VAR}) hoặc empty, dùng env var
-    if (!string.IsNullOrWhiteSpace(baseUrlShop) && 
-        (string.IsNullOrWhiteSpace(options.BaseUrlShop) || options.BaseUrlShop.StartsWith("${")))
+    // Cách 2: Từ Environment.GetEnvironmentVariable (fallback)
+    var baseUrlShopFromEnv = Environment.GetEnvironmentVariable("BASE_URL_SHOP")?.Trim();
+    var baseUrlImageFromEnv = Environment.GetEnvironmentVariable("BASE_URL_IMAGE")?.Trim();
+    
+    // Ưu tiên giá trị từ Configuration trước, nếu không có thì dùng từ Environment
+    var baseUrlShop = !string.IsNullOrWhiteSpace(baseUrlShopFromConfig) ? baseUrlShopFromConfig : baseUrlShopFromEnv;
+    var baseUrlImage = !string.IsNullOrWhiteSpace(baseUrlImageFromConfig) ? baseUrlImageFromConfig : baseUrlImageFromEnv;
+    
+    // Override BaseUrlShop từ env var nếu có
+    if (!string.IsNullOrWhiteSpace(baseUrlShop))
     {
-        options.BaseUrlShop = baseUrlShop.Trim();
+        options.BaseUrlShop = baseUrlShop;
     }
     
-    if (!string.IsNullOrWhiteSpace(baseUrlImage) && 
-        (string.IsNullOrWhiteSpace(options.BaseUrlImage) || options.BaseUrlImage.StartsWith("${")))
+    // Override BaseUrlImage từ env var nếu có
+    if (!string.IsNullOrWhiteSpace(baseUrlImage))
     {
-        options.BaseUrlImage = baseUrlImage.Trim();
+        options.BaseUrlImage = baseUrlImage;
     }
 });
 
