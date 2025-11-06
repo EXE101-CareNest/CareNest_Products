@@ -51,7 +51,29 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
 // Configure Options
-builder.Services.Configure<APIServiceOption>(builder.Configuration.GetSection("APIService"));
+builder.Services.Configure<APIServiceOption>(options =>
+{
+    // Đọc từ appsettings trước
+    builder.Configuration.GetSection("APIService").Bind(options);
+    
+    // Đọc từ environment variables và override nếu có
+    // (Environment variables có priority cao hơn appsettings)
+    var baseUrlShop = Environment.GetEnvironmentVariable("BASE_URL_SHOP");
+    var baseUrlImage = Environment.GetEnvironmentVariable("BASE_URL_IMAGE");
+    
+    // Nếu giá trị từ appsettings là placeholder (${VAR}) hoặc empty, dùng env var
+    if (!string.IsNullOrWhiteSpace(baseUrlShop) && 
+        (string.IsNullOrWhiteSpace(options.BaseUrlShop) || options.BaseUrlShop.StartsWith("${")))
+    {
+        options.BaseUrlShop = baseUrlShop.Trim();
+    }
+    
+    if (!string.IsNullOrWhiteSpace(baseUrlImage) && 
+        (string.IsNullOrWhiteSpace(options.BaseUrlImage) || options.BaseUrlImage.StartsWith("${")))
+    {
+        options.BaseUrlImage = baseUrlImage.Trim();
+    }
+});
 
 // Add Services
 builder.Services.AddScoped<IAPIService, APIService>();
